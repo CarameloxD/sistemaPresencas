@@ -58,10 +58,11 @@ func main() {
 		auth.PUT("/refresh_token", services.AuthorizationRequired(), routes.RefreshToken)
 	}
 
-	home := router.Group("/api/v1/home")
+	/*home := router.Group("/api/v1/home")
+	home.Use(services.AuthorizationRequired())
 	{
 		home.GET("/:id", routes.GetUserById)
-	}
+	}*/
 
 	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	router.Run(":8080")

@@ -9,4 +9,5 @@ type User struct {
 	Password   string `json:"password"`
 	Type       string `json:"type"`
 	Picture    string `json:"picture"`
+	//Agenda     Schedule `json:"agenda"`
 }
