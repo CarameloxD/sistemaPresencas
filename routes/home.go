@@ -5,6 +5,6 @@ import (
 	"sistemaPresencas/controllers"
 )
 
-func GetUserById(c *gin.Context) {
-	controllers.GetUserById(c)
+func GetStudentByNumber(c *gin.Context) {
+	controllers.GetStudentByNumber(c)
 }

@@ -2,7 +2,7 @@ package main
 
 import (
 	"sistemaPresencas/model"
-	//"sistemaPresencas/routes"
+	"sistemaPresencas/routes"
 	"sistemaPresencas/services"
 
 	"github.com/gin-gonic/gin"
@@ -65,11 +65,11 @@ func main() {
 		*/
 	}
 
-	/*home := router.Group("/api/v1/home")
-	home.Use(services.AuthorizationRequired())
+	home := router.Group("/api/v1/home")
+	//home.Use(services.AuthorizationRequired())
 	{
-		home.GET("/:id", routes.GetUserById)
-	}*/
+		home.GET("/:id", routes.GetStudentByNumber)
+	}
 
 	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	router.Run(":8080")

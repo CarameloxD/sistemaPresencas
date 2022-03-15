@@ -7,12 +7,12 @@ import (
 	"sistemaPresencas/services"
 )
 
-func GetUserById(c *gin.Context) {
+func GetStudentByNumber(c *gin.Context) {
 	var user model.Student
 	services.OpenDatabase()
-	services.Db.Find(&user, c.Param("id"))
+	services.Db.Find(&user, c.Param("student_number"))
 
-	if user.ID == 0 {
+	if user.StudentNumber == 0 {
 		c.JSON(http.StatusNotFound, gin.H{"status": http.StatusNotFound, "message": "User not found!"})
 		return
 	}
