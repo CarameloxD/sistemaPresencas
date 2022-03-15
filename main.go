@@ -2,7 +2,7 @@ package main
 
 import (
 	"sistemaPresencas/model"
-	"sistemaPresencas/routes"
+	//"sistemaPresencas/routes"
 	"sistemaPresencas/services"
 
 	"github.com/gin-gonic/gin"
@@ -16,10 +16,13 @@ var identityKey = "id"
 
 func init() {
 	services.OpenDatabase()
-	services.Db.AutoMigrate(&model.Evaluation{})
-	services.Db.AutoMigrate(&model.User{})
+	services.Db.AutoMigrate(&model.Teacher{})
+	services.Db.AutoMigrate(&model.Student{})
 	services.Db.AutoMigrate(&model.Schedule{})
 	services.Db.AutoMigrate(&model.Class{})
+	services.Db.AutoMigrate(&model.Classroom{})
+	services.Db.AutoMigrate(&model.Registration{})
+	services.Db.AutoMigrate(&model.Subject{})
 
 }
 
@@ -34,28 +37,32 @@ func main() {
 	router.Use(gin.Recovery())
 
 	// NO AUTH
-	router.GET("/api/v1/echo", routes.EchoRepeat)
+	//router.GET("/api/v1/echo", routes.EchoRepeat)
 
 	// AUTH
 	router.NoRoute(func(c *gin.Context) {
 		c.JSON(404, gin.H{"code": "PAGE_NOT_FOUND", "message": "Page not found"})
 	})
 
-	evaluation := router.Group("/api/v1/evaluation")
-	evaluation.Use(services.AuthorizationRequired())
+	//evaluation := router.Group("/api/v1/evaluation")
+	//evaluation.Use(services.AuthorizationRequired())
 	{
-		evaluation.POST("/", routes.AddEvaluation)
-		evaluation.GET("/", routes.GetAllEvaluation)
-		evaluation.GET("/:id", routes.GetEvaluationById)
-		evaluation.PUT("/:id", routes.UpdateEvaluation)
-		evaluation.DELETE("/:id", routes.DeleteEvaluation)
+		/*
+			evaluation.POST("/", routes.AddEvaluation)
+			evaluation.GET("/", routes.GetAllEvaluation)
+			evaluation.GET("/:id", routes.GetEvaluationById)
+			evaluation.PUT("/:id", routes.UpdateEvaluation)
+			evaluation.DELETE("/:id", routes.DeleteEvaluation)
+		*/
 	}
 
-	auth := router.Group("/api/v1/auth")
+	//auth := router.Group("/api/v1/auth")
 	{
-		auth.POST("/login", routes.GenerateToken)
-		auth.POST("/register", routes.RegisterUser)
-		auth.PUT("/refresh_token", services.AuthorizationRequired(), routes.RefreshToken)
+		/*
+			auth.POST("/login", routes.GenerateToken)
+			auth.POST("/register", routes.RegisterUser)
+			//auth.PUT("/refresh_token", services.AuthorizationRequired(), routes.RefreshToken)
+		*/
 	}
 
 	/*home := router.Group("/api/v1/home")

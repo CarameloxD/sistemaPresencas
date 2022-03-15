@@ -8,7 +8,7 @@ import (
 )
 
 func GetUserById(c *gin.Context) {
-	var user model.User
+	var user model.Student
 	services.OpenDatabase()
 	services.Db.Find(&user, c.Param("id"))
 
