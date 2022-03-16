@@ -4,7 +4,8 @@ import "gorm.io/gorm"
 
 type Teacher struct {
 	gorm.Model `swaggerignore:"true"`
-	Name       string `json:"name"`
-	Email      string `json:"email"`
-	Picture    string `json:"picture"`
+	Id         int    `gorm:"primaryKey;autoIncrement:true" json:"Id"`
+	Name       string `gorm:"size:255;not null" json:"name"`
+	Email      string `gorm:"size:255;not null" json:"email"`
+	Picture    string `gorm:"size:255;not null" json:"picture"`
 }

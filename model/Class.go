@@ -1,5 +1,6 @@
 package model
 
 type Class struct {
-	ClassAcronym    string    `json:"classroom"`
+	Id           int    `gorm:"primaryKey;autoIncrement:true" json:"id"`
+	ClassAcronym string `gorm:"type:varchar(3);not null" json:"classAcronym"`
 }
