@@ -16,14 +16,13 @@ var identityKey = "id"
 
 func init() {
 	services.OpenDatabase()
-	services.Db.AutoMigrate(&model.Teacher{})
 	services.Db.AutoMigrate(&model.Student{})
-	services.Db.AutoMigrate(&model.Schedule{})
-	services.Db.AutoMigrate(&model.Class{})
-	services.Db.AutoMigrate(&model.Classroom{})
-	services.Db.AutoMigrate(&model.Registration{})
+	services.Db.AutoMigrate(&model.Teacher{})
 	services.Db.AutoMigrate(&model.Subject{})
-
+	services.Db.AutoMigrate(&model.Classroom{})
+	services.Db.AutoMigrate(&model.Class{})
+	services.Db.AutoMigrate(&model.Schedule{})
+	services.Db.AutoMigrate(&model.Registration{})
 }
 
 func main() {
