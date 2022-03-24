@@ -68,6 +68,7 @@ func main() {
 	//home.Use(services.AuthorizationRequired())
 	{
 		home.GET("/:id", routes.GetStudentByNumber)
+		home.POST("/insertStudent", routes.InsertStudent)
 	}
 
 	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))

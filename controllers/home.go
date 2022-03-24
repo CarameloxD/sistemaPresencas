@@ -24,3 +24,17 @@ func GetStudentByNumber(c *gin.Context) {
 	row.Scan(&subjectsName, &schedulesStartingTime, &schedulesEndingtime)
 	c.JSON(http.StatusOK, gin.H{"status": http.StatusOK, "data": user, "subjectsName": subjectsName, "schedulesStartingTime": schedulesStartingTime, "schedulesEndingtime": schedulesEndingtime})
 }
+
+func InsertStudent(c *gin.Context){
+	var student model.Student
+	if err := c.ShouldBindJSON(&student); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"status": http.StatusBadRequest, "message": "Error! Check All Fields"})
+		return
+	}
+	if services.Db.Find(&student, c.Param("student_number")) == nil {
+		services.Db.Save(&student)
+	c.JSON(http.StatusCreated, gin.H{"status":http.StatusCreated, "message": "Created Successfully","StudentNumber" : student.StudentNumber})
+	return
+	}
+	c.JSON(http.StatusNotFound, gin.H{"status": http.StatusNotFound, "message": "User already exist!"})
+}

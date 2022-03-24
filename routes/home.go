@@ -8,3 +8,7 @@ import (
 func GetStudentByNumber(c *gin.Context) {
 	controllers.GetStudentByNumber(c)
 }
+
+func InsertStudent(c *gin.Context){
+	controllers.InsertStudent(c)
+}
