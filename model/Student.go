@@ -7,6 +7,6 @@ type Student struct {
 	Id            int    `gorm:"primaryKey;autoIncrement:true" json:"id"`
 	Name          string `gorm:"size:255;not null" json:"name"`
 	Email         string `gorm:"size:255;not null" json:"email"`
-	StudentNumber int    `json:"studentnumber"`
+	StudentNumber int    `json:"student_number"`
 	Picture       string `json:"picture"`
 }

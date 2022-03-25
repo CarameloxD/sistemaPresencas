@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"sistemaPresencas/model"
@@ -25,16 +26,21 @@ func GetStudentByNumber(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"status": http.StatusOK, "data": user, "subjectsName": subjectsName, "schedulesStartingTime": schedulesStartingTime, "schedulesEndingtime": schedulesEndingtime})
 }
 
-func InsertStudent(c *gin.Context){
+func InsertStudent(c *gin.Context) {
+	//services.OpenDatabase()
 	var student model.Student
 	if err := c.ShouldBindJSON(&student); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"status": http.StatusBadRequest, "message": "Error! Check All Fields"})
 		return
 	}
-	if services.Db.Find(&student, c.Param("student_number")) == nil {
-		services.Db.Save(&student)
-	c.JSON(http.StatusCreated, gin.H{"status":http.StatusCreated, "message": "Created Successfully","StudentNumber" : student.StudentNumber})
-	return
-	}
-	c.JSON(http.StatusNotFound, gin.H{"status": http.StatusNotFound, "message": "User already exist!"})
+
+	fmt.Println("tou mano")
+	fmt.Print(&student)
+	//fmt.Print(student.Name, student.Email)
+	services.Db.Save(&student)
+	c.JSON(http.StatusCreated, gin.H{"status": http.StatusCreated, "message": "Created Successfully"})
+
+	//c.JSON(http.StatusCreated, gin.H{"status": http.StatusCreated, "message": "Created Successfully", "student_number": student.StudentNumber})
+
+	//c.JSON(http.StatusNotFound, gin.H{"status": http.StatusNotFound, "message": c.Param("email")})
 }
