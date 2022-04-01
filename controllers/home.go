@@ -44,3 +44,13 @@ func InsertStudent(c *gin.Context) {
 
 	//c.JSON(http.StatusNotFound, gin.H{"status": http.StatusNotFound, "message": c.Param("email")})
 }
+
+func InsertClassroom(c *gin.Context) {
+	var classroom model.Classroom
+	if err := c.ShouldBindJSON(&classroom); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"status": http.StatusBadRequest, "message": "Error! Check All Fields"})
+		return
+	}
+	services.Db.Save(&classroom)
+	c.JSON(http.StatusCreated, gin.H{"status": http.StatusCreated, "message": "Created Successfully"})
+}
