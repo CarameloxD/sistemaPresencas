@@ -16,3 +16,7 @@ func InsertStudent(c *gin.Context) {
 func InsertClassroom(c *gin.Context) {
 	controllers.InsertClassroom(c)
 }
+
+func InsertClass(c *gin.Context) {
+	controllers.InsertClass(c)
+}

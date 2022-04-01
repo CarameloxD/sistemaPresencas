@@ -34,7 +34,6 @@ func InsertStudent(c *gin.Context) {
 		return
 	}
 
-	fmt.Println("tou mano")
 	fmt.Print(&student)
 	//fmt.Print(student.Name, student.Email)
 	services.Db.Save(&student)
@@ -52,5 +51,15 @@ func InsertClassroom(c *gin.Context) {
 		return
 	}
 	services.Db.Save(&classroom)
+	c.JSON(http.StatusCreated, gin.H{"status": http.StatusCreated, "message": "Created Successfully"})
+}
+
+func InsertClass(c *gin.Context) {
+	var class model.Class
+	if err := c.ShouldBindJSON(&class); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"status": http.StatusBadRequest, "message": "Error! Check All Fields"})
+		return
+	}
+	services.Db.Save(&class)
 	c.JSON(http.StatusCreated, gin.H{"status": http.StatusCreated, "message": "Created Successfully"})
 }
