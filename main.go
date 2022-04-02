@@ -64,11 +64,33 @@ func main() {
 		*/
 	}
 
-	home := router.Group("/api/v1/home")
+	/*home := router.Group("/api/v1/home")
 	//home.Use(services.AuthorizationRequired())
 	{
-		home.GET("/:id", routes.GetStudentByNumber)
-		home.POST("/insertStudent", routes.InsertStudent)
+
+	}
+	*/
+
+	student := router.Group("/api/v1/student")
+	{
+		student.GET("/:id", routes.GetStudentByNumber)
+		student.POST("/", routes.InsertStudent)
+	}
+
+	teacher := router.Group("/api/v1/teacher")
+	{
+		teacher.GET("/:id", routes.GetTeacherInfo)
+		teacher.POST("/", routes.InsertTeacher)
+	}
+
+	class := router.Group("/api/v1/class")
+	{
+		class.POST("/", routes.InsertClass)
+	}
+
+	classroom := router.Group("/api/v1/classroom")
+	{
+		classroom.POST("/", routes.InsertClassroom)
 	}
 
 	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
