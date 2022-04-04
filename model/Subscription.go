@@ -1,9 +1,9 @@
 package model
 
-type Registration struct {
+type Subscription struct {
 	Id        int     `gorm:"primaryKey;autoIncrement:true" json:"id"`
-	IdClass   int     `gorm:"not null" json:"idClass"`
-	Class     Class   `gorm:"ForeignKey: IdClass"`
+	IdCourse  int     `gorm:"not null" json:"idCourse"`
+	Course    Course  `gorm:"ForeignKey: IdCourse"`
 	IdStudent int     `gorm:"not null" json:"idStudent"`
 	Student   Student `gorm:"ForeignKey: IdStudent"`
 }
