@@ -9,6 +9,10 @@ func GetStudentByNumber(c *gin.Context) {
 	controllers.GetStudentByNumber(c)
 }
 
-func InsertStudent(c *gin.Context){
+func InsertStudent(c *gin.Context) {
 	controllers.InsertStudent(c)
+}
+
+func GetAllStudents(c *gin.Context) {
+	controllers.GetAllStudents(c)
 }

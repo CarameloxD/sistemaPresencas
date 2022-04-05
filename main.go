@@ -17,12 +17,14 @@ var identityKey = "id"
 func init() {
 	services.OpenDatabase()
 	services.Db.AutoMigrate(&model.Student{})
+	services.Db.AutoMigrate(&model.Course{})
 	services.Db.AutoMigrate(&model.Teacher{})
 	services.Db.AutoMigrate(&model.Subject{})
 	services.Db.AutoMigrate(&model.Classroom{})
 	services.Db.AutoMigrate(&model.Class{})
 	services.Db.AutoMigrate(&model.Schedule{})
-	services.Db.AutoMigrate(&model.Registration{})
+	services.Db.AutoMigrate(&model.Subscription{})
+	services.Db.AutoMigrate(&model.Attendance{})
 }
 
 func main() {
@@ -74,6 +76,7 @@ func main() {
 	student := router.Group("/api/v1/student")
 	{
 		student.GET("/:id", routes.GetStudentByNumber)
+		student.GET("/getStudents", routes.GetAllStudents)
 		student.POST("/insertStudent", routes.InsertStudent)
 	}
 
@@ -96,6 +99,12 @@ func main() {
 	subject := router.Group("/api/v1/subject")
 	{
 		subject.POST("/insertSubject", routes.InsertSubject)
+	}
+
+	course := router.Group("/api/v1/course")
+	{
+		course.GET("/getCourses", routes.GetAllCourses)
+		course.POST("/InsertCourse", routes.InsertCourse)
 	}
 
 	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))

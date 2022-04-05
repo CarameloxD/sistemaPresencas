@@ -21,7 +21,7 @@ func GetStudentByNumber(c *gin.Context) {
 
 	var subjectsName string
 	var schedulesStartingTime, schedulesEndingtime time.Time
-	row := services.Db.Raw("Select subjects.name, schedules.starting_time, schedules.ending_time from schedules, classes, subjects, classrooms, teachers, students, registrations where registrations.id_student = students.id and classes.id = registrations.id_class and subjects.id = schedules.id_subject and teachers.id = schedules.id_teacher and classrooms.id = schedules.id_classroom and classes.id = schedules.id_class and students.student_number = ?", user.StudentNumber).Row()
+	row := services.Db.Raw("Select subjects.name, schedules.starting_time, schedules.ending_time from schedules, classes, subjects, classrooms, teachers, students, subscriptions where subscriptions.id_student = students.id and classes.id = subscriptions.id_class and subjects.id = schedules.id_subject and teachers.id = schedules.id_teacher and classrooms.id = schedules.id_classroom and classes.id = schedules.id_class and students.student_number = ?", user.StudentNumber).Row()
 	row.Scan(&subjectsName, &schedulesStartingTime, &schedulesEndingtime)
 	c.JSON(http.StatusOK, gin.H{"status": http.StatusOK, "data": user, "subjectsName": subjectsName, "schedulesStartingTime": schedulesStartingTime, "schedulesEndingtime": schedulesEndingtime})
 }
@@ -42,4 +42,16 @@ func InsertStudent(c *gin.Context) {
 	//c.JSON(http.StatusCreated, gin.H{"status": http.StatusCreated, "message": "Created Successfully", "student_number": student.StudentNumber})
 
 	//c.JSON(http.StatusNotFound, gin.H{"status": http.StatusNotFound, "message": c.Param("email")})
+}
+
+func GetAllStudents(c *gin.Context) {
+	var students []model.Student
+
+	services.OpenDatabase()
+	rows, _ := services.Db.Raw("Select id, name from students").Rows()
+
+	for rows.Next() {
+		services.Db.ScanRows(rows, &students)
+	}
+	c.JSON(http.StatusOK, gin.H{"status": http.StatusOK, "students": students})
 }
