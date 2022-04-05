@@ -86,6 +86,11 @@ func main() {
 		teacher.POST("/insertTeacher", routes.InsertTeacher)
 	}
 
+	subscription := router.Group("/api/v1/subscription")
+	{
+		subscription.POST("/insertSubscription", routes.InsertSubscription)
+	}
+
 	class := router.Group("/api/v1/class")
 	{
 		class.POST("/insertClass", routes.InsertClass)
