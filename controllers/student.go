@@ -1,7 +1,6 @@
 package controllers
 
 import (
-	"fmt"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"sistemaPresencas/model"
@@ -34,14 +33,8 @@ func InsertStudent(c *gin.Context) {
 		return
 	}
 
-	fmt.Print(&student)
-	//fmt.Print(student.Name, student.Email)
 	services.Db.Save(&student)
 	c.JSON(http.StatusCreated, gin.H{"status": http.StatusCreated, "message": "Created Successfully"})
-
-	//c.JSON(http.StatusCreated, gin.H{"status": http.StatusCreated, "message": "Created Successfully", "student_number": student.StudentNumber})
-
-	//c.JSON(http.StatusNotFound, gin.H{"status": http.StatusNotFound, "message": c.Param("email")})
 }
 
 func GetAllStudents(c *gin.Context) {
