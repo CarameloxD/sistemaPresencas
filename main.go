@@ -16,6 +16,7 @@ var identityKey = "id"
 
 func init() {
 	services.OpenDatabase()
+	services.Db.AutoMigrate(&model.Admin{})
 	services.Db.AutoMigrate(&model.Student{})
 	services.Db.AutoMigrate(&model.Course{})
 	services.Db.AutoMigrate(&model.Teacher{})
@@ -31,47 +32,18 @@ func main() {
 
 	services.FormatSwagger()
 
-	// Creates a gin router with default middleware:
-	// logger and recovery (crash-free) middleware
 	router := gin.New()
 	router.Use(gin.Logger())
 	router.Use(gin.Recovery())
 
-	// NO AUTH
-	//router.GET("/api/v1/echo", routes.EchoRepeat)
-
-	// AUTH
 	router.NoRoute(func(c *gin.Context) {
 		c.JSON(404, gin.H{"code": "PAGE_NOT_FOUND", "message": "Page not found"})
 	})
 
-	//evaluation := router.Group("/api/v1/evaluation")
-	//evaluation.Use(services.AuthorizationRequired())
+	admin := router.Group("/api/v1/admin")
 	{
-		/*
-			evaluation.POST("/", routes.AddEvaluation)
-			evaluation.GET("/", routes.GetAllEvaluation)
-			evaluation.GET("/:id", routes.GetEvaluationById)
-			evaluation.PUT("/:id", routes.UpdateEvaluation)
-			evaluation.DELETE("/:id", routes.DeleteEvaluation)
-		*/
+		admin.POST("/login", routes.LoginAdmin)
 	}
-
-	//auth := router.Group("/api/v1/auth")
-	{
-		/*
-			auth.POST("/login", routes.GenerateToken)
-			auth.POST("/register", routes.RegisterUser)
-			//auth.PUT("/refresh_token", services.AuthorizationRequired(), routes.RefreshToken)
-		*/
-	}
-
-	/*home := router.Group("/api/v1/home")
-	//home.Use(services.AuthorizationRequired())
-	{
-
-	}
-	*/
 
 	student := router.Group("/api/v1/student")
 	{
