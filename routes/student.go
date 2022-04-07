@@ -16,3 +16,7 @@ func InsertStudent(c *gin.Context) {
 func GetAllStudents(c *gin.Context) {
 	controllers.GetAllStudents(c)
 }
+
+func DeleteStudent(c *gin.Context) {
+	controllers.DeleteStudent(c)
+}

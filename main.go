@@ -48,40 +48,40 @@ func main() {
 	student := router.Group("/api/v1/student")
 	{
 		student.GET("/:id", routes.GetStudentByNumber)
-		student.GET("/getStudents", routes.GetAllStudents)
-		student.POST("/insertStudent", routes.InsertStudent)
+		student.GET("/", routes.GetAllStudents)
+		student.POST("/", routes.InsertStudent)
 	}
 
 	teacher := router.Group("/api/v1/teacher")
 	{
 		teacher.GET("/:id", routes.GetTeacherInfo)
-		teacher.POST("/insertTeacher", routes.InsertTeacher)
+		teacher.POST("/", routes.InsertTeacher)
 	}
 
 	subscription := router.Group("/api/v1/subscription")
 	{
-		subscription.POST("/insertSubscription", routes.InsertSubscription)
+		subscription.POST("/", routes.InsertSubscription)
 	}
 
 	class := router.Group("/api/v1/class")
 	{
-		class.POST("/insertClass", routes.InsertClass)
+		class.POST("/", routes.InsertClass)
 	}
 
 	classroom := router.Group("/api/v1/classroom")
 	{
-		classroom.POST("/insertClassroom", routes.InsertClassroom)
+		classroom.POST("/", routes.InsertClassroom)
 	}
 
 	subject := router.Group("/api/v1/subject")
 	{
-		subject.POST("/insertSubject", routes.InsertSubject)
+		subject.POST("/", routes.InsertSubject)
 	}
 
 	course := router.Group("/api/v1/course")
 	{
-		course.GET("/getCourses", routes.GetAllCourses)
-		course.POST("/InsertCourse", routes.InsertCourse)
+		course.GET("/", routes.GetAllCourses)
+		course.POST("/", routes.InsertCourse)
 	}
 
 	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))

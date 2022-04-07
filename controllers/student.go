@@ -48,3 +48,15 @@ func GetAllStudents(c *gin.Context) {
 	}
 	c.JSON(http.StatusOK, gin.H{"status": http.StatusOK, "students": students})
 }
+
+func DeleteStudent(c *gin.Context) {
+	var student model.Student
+	id := c.Param("id")
+	services.Db.First(&student, id)
+	if student.ID == 0 {
+		c.JSON(http.StatusNotFound,gin.H{"status": http.StatusNotFound, "message": "None found!"})
+		return
+	} 
+	services.Db.Delete(&student)
+	c.JSON(http.StatusOK, gin.H{"status": http.StatusOK, "message": "Delete succeded!"})
+}

@@ -44,3 +44,15 @@ func GetTeacherInfo(c *gin.Context) {
 		//c.JSON(http.StatusOK, gin.H{"status": http.StatusOK, "data": user, "subjectsName": subjectsName, "schedulesStartingTime": schedulesStartingTime, "schedulesEndingtime": schedulesEndingtime})
 		c.JSON(http.StatusOK, gin.H{"status": http.StatusOK, "data": user})
 }
+
+func DeleteTeacher(c *gin.Context) {
+	var teacher model.Teacher
+	username := c.Param("username")
+	services.Db.First(&teacher, username)
+	if teacher.ID == 0 {
+		c.JSON(http.StatusNotFound,gin.H{"status": http.StatusNotFound, "message": "None found!"})
+		return
+	} 
+	services.Db.Delete(&teacher)
+	c.JSON(http.StatusOK, gin.H{"status": http.StatusOK, "message": "Delete succeded!"})
+}
