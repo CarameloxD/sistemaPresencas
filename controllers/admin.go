@@ -10,15 +10,6 @@ import (
 	"sistemaPresencas/services"
 )
 
-/*func comparePasswords(hashedPwd string, plainPwd []byte) bool {
-	byteHash := []byte(hashedPwd)
-	err := bcrypt.CompareHashAndPassword(byteHash, plainPwd)
-	if err != nil {
-		fmt.Println(err)
-		return false
-	}
-	return true
-}*/
 func LoginHandler(c *gin.Context) {
 	var creds model.Admin
 	var usr model.Admin
@@ -46,5 +37,6 @@ func LoginHandler(c *gin.Context) {
 
 		// caso td de certo..
 		c.JSON(http.StatusOK, gin.H{"status": http.StatusOK, "message": "Success!", "token": token, "ID": usr.ID, "username": usr.Name})
+		fmt.Println(usr.Name)
 	}
 }
