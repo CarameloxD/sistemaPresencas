@@ -8,3 +8,7 @@ import (
 func InsertClassroom(c *gin.Context) {
 	controllers.InsertClassroom(c)
 }
+
+func GetAllClassrooms(c *gin.Context) {
+	controllers.GetAllClassrooms(c)
+}

@@ -16,3 +16,15 @@ func InsertSubject(c *gin.Context) {
 	services.Db.Save(&subject)
 	c.JSON(http.StatusCreated, gin.H{"status": http.StatusCreated, "message": "Created Successfully"})
 }
+
+func GetAllSubjects(c *gin.Context) {
+	var subjects []model.Subject
+
+	services.OpenDatabase()
+	rows, _ := services.Db.Raw("Select * from subjects").Rows()
+
+	for rows.Next() {
+		services.Db.ScanRows(rows, &subjects)
+	}
+	c.JSON(http.StatusOK, gin.H{"status": http.StatusOK, "subjects": subjects})
+}

@@ -8,3 +8,7 @@ import (
 func InsertSubject(c *gin.Context) {
 	controllers.InsertSubject(c)
 }
+
+func GetAllSubjects(c *gin.Context) {
+	controllers.GetAllSubjects(c)
+}

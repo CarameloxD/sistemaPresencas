@@ -16,3 +16,15 @@ func InsertClassroom(c *gin.Context) {
 	services.Db.Save(&classroom)
 	c.JSON(http.StatusCreated, gin.H{"status": http.StatusCreated, "message": "Created Successfully"})
 }
+
+func GetAllClassrooms(c *gin.Context) {
+	var classrooms []model.Classroom
+
+	services.OpenDatabase()
+	rows, _ := services.Db.Raw("Select * from classrooms").Rows()
+
+	for rows.Next() {
+		services.Db.ScanRows(rows, &classrooms)
+	}
+	c.JSON(http.StatusOK, gin.H{"status": http.StatusOK, "classrooms": classrooms})
+}

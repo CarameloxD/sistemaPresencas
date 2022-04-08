@@ -28,21 +28,33 @@ func InsertTeacher(c *gin.Context) {
 }
 
 func GetTeacherInfo(c *gin.Context) {
-		var user model.Teacher
-		services.OpenDatabase()
-		services.Db.Find(&user, c.Param("username"))
-	
-		if len(user.Username) == 0 {
-			c.JSON(http.StatusNotFound, gin.H{"status": http.StatusNotFound, "message": "User not found!"})
-			return
-		}
-	
-		//var subjectsName string
-		//var schedulesStartingTime, schedulesEndingtime time.Time
-		//row := services.Db.Raw("Select subjects.name, schedules.starting_time, schedules.ending_time from schedules, classes, subjects, classrooms, teachers, students, registrations where registrations.id_student = students.id and classes.id = registrations.id_class and subjects.id = schedules.id_subject and teachers.id = schedules.id_teacher and classrooms.id = schedules.id_classroom and classes.id = schedules.id_class and schedules.id_teacher = ?", user.ID).Row()
-		//row.Scan(&subjectsName, &schedulesStartingTime, &schedulesEndingtime)
-		//c.JSON(http.StatusOK, gin.H{"status": http.StatusOK, "data": user, "subjectsName": subjectsName, "schedulesStartingTime": schedulesStartingTime, "schedulesEndingtime": schedulesEndingtime})
-		c.JSON(http.StatusOK, gin.H{"status": http.StatusOK, "data": user})
+	var user model.Teacher
+	services.OpenDatabase()
+	services.Db.Find(&user, c.Param("username"))
+
+	if len(user.Username) == 0 {
+		c.JSON(http.StatusNotFound, gin.H{"status": http.StatusNotFound, "message": "User not found!"})
+		return
+	}
+
+	//var subjectsName string
+	//var schedulesStartingTime, schedulesEndingtime time.Time
+	//row := services.Db.Raw("Select subjects.name, schedules.starting_time, schedules.ending_time from schedules, classes, subjects, classrooms, teachers, students, registrations where registrations.id_student = students.id and classes.id = registrations.id_class and subjects.id = schedules.id_subject and teachers.id = schedules.id_teacher and classrooms.id = schedules.id_classroom and classes.id = schedules.id_class and schedules.id_teacher = ?", user.ID).Row()
+	//row.Scan(&subjectsName, &schedulesStartingTime, &schedulesEndingtime)
+	//c.JSON(http.StatusOK, gin.H{"status": http.StatusOK, "data": user, "subjectsName": subjectsName, "schedulesStartingTime": schedulesStartingTime, "schedulesEndingtime": schedulesEndingtime})
+	c.JSON(http.StatusOK, gin.H{"status": http.StatusOK, "data": user})
+}
+
+func GetAllTeachers(c *gin.Context) {
+	var teachers []model.Teacher
+
+	services.OpenDatabase()
+	rows, _ := services.Db.Raw("Select * from teachers").Rows()
+
+	for rows.Next() {
+		services.Db.ScanRows(rows, &teachers)
+	}
+	c.JSON(http.StatusOK, gin.H{"status": http.StatusOK, "teachers": teachers})
 }
 
 func DeleteTeacher(c *gin.Context) {
@@ -50,9 +62,9 @@ func DeleteTeacher(c *gin.Context) {
 	username := c.Param("username")
 	services.Db.First(&teacher, username)
 	if teacher.ID == 0 {
-		c.JSON(http.StatusNotFound,gin.H{"status": http.StatusNotFound, "message": "None found!"})
+		c.JSON(http.StatusNotFound, gin.H{"status": http.StatusNotFound, "message": "None found!"})
 		return
-	} 
+	}
 	services.Db.Delete(&teacher)
 	c.JSON(http.StatusOK, gin.H{"status": http.StatusOK, "message": "Delete succeded!"})
 }
