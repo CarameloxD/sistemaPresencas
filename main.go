@@ -50,7 +50,7 @@ func main() {
 		student.GET("/:id", routes.GetStudentByNumber)
 		student.GET("/", routes.GetAllStudents)
 		student.POST("/", routes.InsertStudent)
-		student.DELETE("delete/:id/", routes.DeleteStudent)
+		student.DELETE("/:id", routes.DeleteStudent)
 	}
 
 	teacher := router.Group("/api/v1/teacher")
@@ -92,6 +92,13 @@ func main() {
 	schedule := router.Group("/api/v1/schedule")
 	{
 		schedule.POST("/", routes.InsertSchedule)
+		schedule.GET("/", routes.GetAllSchedules)
+		schedule.GET("/:id", routes.GetStudentsBySchedule)
+	}
+
+	attendance := router.Group("/api/v1/attendance")
+	{
+		attendance.POST("/", routes.InsertAttendance)
 	}
 
 	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))

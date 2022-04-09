@@ -35,3 +35,33 @@ func InsertSchedule(c *gin.Context) {
 
 	c.JSON(http.StatusCreated, gin.H{"status": http.StatusCreated, "message": "Created Successfully"})
 }
+
+func GetAllSchedules(c *gin.Context) {
+	var schedules []model.Schedule
+
+	services.OpenDatabase()
+	rows, _ := services.Db.Raw("Select * from schedules").Rows()
+
+	for rows.Next() {
+		services.Db.ScanRows(rows, &schedules)
+	}
+	c.JSON(http.StatusOK, gin.H{"status": http.StatusOK, "schedules": schedules})
+}
+
+func GetStudentsBySchedule(c *gin.Context) {
+	var schedule model.Schedule
+	services.OpenDatabase()
+	services.Db.Find(&schedule, c.Param("id"))
+
+	if schedule.Id == 0 {
+		c.JSON(http.StatusNotFound, gin.H{"status": http.StatusNotFound, "message": "Schedule not found!"})
+		return
+	}
+
+	var students []model.Student
+	rows, _ := services.Db.Raw("Select students.* from schedules, classes, subjects, courses, subscriptions, students where schedules.id = ? and schedules.id_class = classes.id and classes.id_subject = subjects.id and subjects.id_course = courses.id and subscriptions.id_course = courses.id and subscriptions.id_student = students.id", schedule.Id).Rows()
+	for rows.Next() {
+		services.Db.ScanRows(rows, &students)
+	}
+	c.JSON(http.StatusOK, gin.H{"status": http.StatusOK, "data": schedule, "students": students})
+}

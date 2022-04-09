@@ -8,3 +8,11 @@ import (
 func InsertSchedule(c *gin.Context) {
 	controllers.InsertSchedule(c)
 }
+
+func GetAllSchedules(c *gin.Context) {
+	controllers.GetAllSchedules(c)
+}
+
+func GetStudentsBySchedule(c *gin.Context) {
+	controllers.GetStudentsBySchedule(c)
+}

@@ -44,6 +44,3 @@ EXPOSE 8080
 
 # HOT RELOAD
 ENTRYPOINT CompileDaemon -log-prefix=false -build="go build ./main.go" -command="./main"
-
-
-
