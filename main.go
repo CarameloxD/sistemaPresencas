@@ -51,6 +51,7 @@ func main() {
 		student.GET("/", routes.GetAllStudents)
 		student.POST("/", routes.InsertStudent)
 		student.DELETE("/:id", routes.DeleteStudent)
+		student.GET("getSchedulesByStudent/:id", routes.GetSchedulesByStudent)
 	}
 
 	teacher := router.Group("/api/v1/teacher")

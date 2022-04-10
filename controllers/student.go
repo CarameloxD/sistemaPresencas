@@ -8,6 +8,16 @@ import (
 	"time"
 )
 
+type RequestS struct {
+	Id           int
+	IdClass      int
+	StartingTime time.Time
+	EndingTime   time.Time
+	IdClassroom  int
+	Name         string
+	Identifier   int
+}
+
 func GetStudentByNumber(c *gin.Context) {
 	var user model.Student
 	services.OpenDatabase()
@@ -18,11 +28,7 @@ func GetStudentByNumber(c *gin.Context) {
 		return
 	}
 
-	var subjectsName string
-	var schedulesStartingTime, schedulesEndingtime time.Time
-	row := services.Db.Raw("Select subjects.name, schedules.starting_time, schedules.ending_time from schedules, classes, subjects, classrooms, teachers, students, subscriptions where subscriptions.id_student = students.id and classes.id = subscriptions.id_class and subjects.id = schedules.id_subject and teachers.id = schedules.id_teacher and classrooms.id = schedules.id_classroom and classes.id = schedules.id_class and students.student_number = ?", user.StudentNumber).Row()
-	row.Scan(&subjectsName, &schedulesStartingTime, &schedulesEndingtime)
-	c.JSON(http.StatusOK, gin.H{"status": http.StatusOK, "data": user, "subjectsName": subjectsName, "schedulesStartingTime": schedulesStartingTime, "schedulesEndingtime": schedulesEndingtime})
+	c.JSON(http.StatusOK, gin.H{"status": http.StatusOK, "user": user})
 }
 
 func InsertStudent(c *gin.Context) {
@@ -60,4 +66,22 @@ func DeleteStudent(c *gin.Context) {
 	}
 	services.Db.Delete(&user)
 	c.JSON(http.StatusOK, gin.H{"status": http.StatusOK, "message": "Deleted!"})
+}
+
+func GetSchedulesByStudent(c *gin.Context) {
+	var user model.Student
+	services.OpenDatabase()
+	services.Db.Find(&user, c.Param("student_number"))
+
+	if user.Id == 0 {
+		c.JSON(http.StatusNotFound, gin.H{"status": http.StatusNotFound, "message": "Schedule not found!"})
+		return
+	}
+
+	var requests []RequestS
+	rows, _ := services.Db.Raw("Select schedules.*, subjects.name, classrooms.identifier from students, subscriptions, courses, subjects, classes, schedules, classrooms where students.id = ? and students.id = subscriptions.id_student and subscriptions.id_course = courses.id and subjects.id_course = courses.id and classes.id_subject = subjects.id and schedules.id_class = classes.id and schedules.id_classroom = classrooms.id and date(schedules.starting_time) = current_date", user.Id).Rows()
+	for rows.Next() {
+		services.Db.ScanRows(rows, &requests)
+	}
+	c.JSON(http.StatusOK, gin.H{"status": http.StatusOK, "schedules": requests})
 }

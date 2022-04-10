@@ -20,3 +20,7 @@ func GetAllStudents(c *gin.Context) {
 func DeleteStudent(c *gin.Context) {
 	controllers.DeleteStudent(c)
 }
+
+func GetSchedulesByStudent(c *gin.Context) {
+	controllers.GetSchedulesByStudent(c)
+}
