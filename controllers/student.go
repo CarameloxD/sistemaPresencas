@@ -16,6 +16,7 @@ type RequestS struct {
 	IdClassroom  int
 	Name         string
 	Identifier   int
+	Teacher      string
 }
 
 func GetStudentByNumber(c *gin.Context) {
@@ -47,7 +48,7 @@ func GetAllStudents(c *gin.Context) {
 	var students []model.Student
 
 	services.OpenDatabase()
-	rows, _ := services.Db.Raw("Select id, name from students").Rows()
+	rows, _ := services.Db.Raw("Select * from students").Rows()
 
 	for rows.Next() {
 		services.Db.ScanRows(rows, &students)
@@ -79,7 +80,7 @@ func GetSchedulesByStudent(c *gin.Context) {
 	}
 
 	var requests []RequestS
-	rows, _ := services.Db.Raw("Select schedules.*, subjects.name, classrooms.identifier from students, subscriptions, courses, subjects, classes, schedules, classrooms where students.id = ? and students.id = subscriptions.id_student and subscriptions.id_course = courses.id and subjects.id_course = courses.id and classes.id_subject = subjects.id and schedules.id_class = classes.id and schedules.id_classroom = classrooms.id and date(schedules.starting_time) = current_date", user.Id).Rows()
+	rows, _ := services.Db.Raw("Select schedules.*, subjects.name, classrooms.identifier, teachers.name as Teacher from students, subscriptions, courses, subjects, classes, schedules, classrooms, teachers where students.id = ? and students.id = subscriptions.id_student and subscriptions.id_course = courses.id and subjects.id_course = courses.id and classes.id_subject = subjects.id and schedules.id_class = classes.id and schedules.id_classroom = classrooms.id and classes.id_teacher = teachers.id and date(schedules.starting_time) = current_date order by schedules.starting_time", user.Id).Rows()
 	for rows.Next() {
 		services.Db.ScanRows(rows, &requests)
 	}
