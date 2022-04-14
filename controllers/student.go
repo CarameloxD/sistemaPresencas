@@ -15,6 +15,7 @@ type RequestS struct {
 	EndingTime   time.Time
 	IdClassroom  int
 	Name         string
+	Type         string
 	Identifier   int
 	Teacher      string
 }
@@ -80,7 +81,7 @@ func GetSchedulesByStudent(c *gin.Context) {
 	}
 
 	var requests []RequestS
-	rows, _ := services.Db.Raw("Select schedules.*, subjects.name, classrooms.identifier, teachers.name as Teacher from students, subscriptions, courses, subjects, classes, schedules, classrooms, teachers where students.id = ? and students.id = subscriptions.id_student and subscriptions.id_course = courses.id and subjects.id_course = courses.id and classes.id_subject = subjects.id and schedules.id_class = classes.id and schedules.id_classroom = classrooms.id and classes.id_teacher = teachers.id and date(schedules.starting_time) = current_date order by schedules.starting_time", user.Id).Rows()
+	rows, _ := services.Db.Raw("Select schedules.*, subjects.name, subjects.type,classrooms.identifier, teachers.name as Teacher from students, subscriptions, courses, subjects, classes, schedules, classrooms, teachers where students.id = ? and students.id = subscriptions.id_student and subscriptions.id_course = courses.id and subjects.id_course = courses.id and classes.id_subject = subjects.id and schedules.id_class = classes.id and schedules.id_classroom = classrooms.id and classes.id_teacher = teachers.id and date(schedules.starting_time) = current_date order by schedules.starting_time", user.Id).Rows()
 	for rows.Next() {
 		services.Db.ScanRows(rows, &requests)
 	}

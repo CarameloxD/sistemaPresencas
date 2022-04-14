@@ -16,6 +16,12 @@ type Request struct {
 	IdClassroom  int
 }
 
+type RequestGet struct {
+	Id           int
+	StartingTime string
+	ClassAcronym string
+}
+
 func InsertSchedule(c *gin.Context) {
 	var request Request
 	if err := c.ShouldBindJSON(&request); err != nil {
@@ -37,10 +43,10 @@ func InsertSchedule(c *gin.Context) {
 }
 
 func GetAllSchedules(c *gin.Context) {
-	var schedules []model.Schedule
+	var schedules []RequestGet
 
 	services.OpenDatabase()
-	rows, _ := services.Db.Raw("Select * from schedules").Rows()
+	rows, _ := services.Db.Raw("select schedules.id, schedules.starting_time, classes.class_acronym from schedules, classes where schedules.id_class = classes.id;").Rows()
 
 	for rows.Next() {
 		services.Db.ScanRows(rows, &schedules)
