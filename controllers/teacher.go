@@ -49,22 +49,20 @@ func GetAllTeachers(c *gin.Context) {
 	var teachers []model.Teacher
 
 	services.OpenDatabase()
-	rows, _ := services.Db.Raw("Select * from teachers").Rows()
+	services.Db.Select("Id,name,username,email").Find(&teachers)
 
-	for rows.Next() {
-		services.Db.ScanRows(rows, &teachers)
-	}
 	c.JSON(http.StatusOK, gin.H{"status": http.StatusOK, "teachers": teachers})
 }
 
 func DeleteTeacher(c *gin.Context) {
-	var teacher model.Teacher
-	username := c.Param("username")
-	services.Db.First(&teacher, username)
-	if teacher.ID == 0 {
-		c.JSON(http.StatusNotFound, gin.H{"status": http.StatusNotFound, "message": "None found!"})
+	var user model.Teacher
+	services.OpenDatabase()
+	services.Db.Find(&user, c.Param("Id"))
+
+	if user.Id == 0 {
+		c.JSON(http.StatusNotFound, gin.H{"status": http.StatusNotFound, "message": "User not found!"})
 		return
 	}
-	services.Db.Delete(&teacher)
-	c.JSON(http.StatusOK, gin.H{"status": http.StatusOK, "message": "Delete succeded!"})
+	services.Db.Delete(&user)
+	c.JSON(http.StatusOK, gin.H{"status": http.StatusOK, "message": "Deleted!"})
 }

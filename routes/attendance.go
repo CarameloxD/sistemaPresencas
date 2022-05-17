@@ -8,3 +8,7 @@ import (
 func InsertAttendance(c *gin.Context) {
 	controllers.InsertAttendance(c)
 }
+
+func DeleteAttendance(c *gin.Context) {
+	//controllers.DeleteAttendance(c)
+}

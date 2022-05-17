@@ -28,3 +28,16 @@ func GetAllSubjects(c *gin.Context) {
 	}
 	c.JSON(http.StatusOK, gin.H{"status": http.StatusOK, "subjects": subjects})
 }
+
+func DeleteSubject(c *gin.Context) {
+	var subject model.Subject
+	services.OpenDatabase()
+	services.Db.Find(&subject, c.Param("id"))
+
+	if subject.Id == 0 {
+		c.JSON(http.StatusNotFound, gin.H{"status": http.StatusNotFound, "message": "subject not found!"})
+		return
+	}
+	services.Db.Delete(&subject)
+	c.JSON(http.StatusOK, gin.H{"status": http.StatusOK, "message": "Deleted!"})
+}

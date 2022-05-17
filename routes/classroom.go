@@ -12,3 +12,7 @@ func InsertClassroom(c *gin.Context) {
 func GetAllClassrooms(c *gin.Context) {
 	controllers.GetAllClassrooms(c)
 }
+
+func DeleteClassroom(c *gin.Context) {
+	controllers.DeleteClassroom(c)
+}

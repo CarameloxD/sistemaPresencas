@@ -12,3 +12,7 @@ func InsertSubject(c *gin.Context) {
 func GetAllSubjects(c *gin.Context) {
 	controllers.GetAllSubjects(c)
 }
+
+func DeleteSubject(c *gin.Context) {
+	controllers.DeleteSubject(c)
+}

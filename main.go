@@ -52,6 +52,7 @@ func main() {
 		student.POST("/", routes.InsertStudent)
 		student.DELETE("/:id", routes.DeleteStudent)
 		student.GET("getSchedulesByStudent/:id", routes.GetSchedulesByStudent)
+		student.GET("getStudentsByCourse/:id", routes.GetStudentsByCourse)
 	}
 
 	teacher := router.Group("/api/v1/teacher")
@@ -59,35 +60,42 @@ func main() {
 		teacher.GET("/:id", routes.GetTeacherInfo)
 		teacher.GET("/", routes.GetAllTeachers)
 		teacher.POST("/", routes.InsertTeacher)
+		teacher.DELETE("/:id", routes.DeleteTeacher)
 	}
 
 	subscription := router.Group("/api/v1/subscription")
 	{
 		subscription.POST("/", routes.InsertSubscription)
+		subscription.DELETE("/delete", routes.DeleteSubscription)
+		subscription.GET("/", routes.GetAllSubscriptions)
 	}
 
 	class := router.Group("/api/v1/class")
 	{
 		class.POST("/", routes.InsertClass)
 		class.GET("/", routes.GetAllClasses)
+		class.DELETE("/:id", routes.DeleteClass)
 	}
 
 	classroom := router.Group("/api/v1/classroom")
 	{
 		classroom.POST("/", routes.InsertClassroom)
 		classroom.GET("/", routes.GetAllClassrooms)
+		classroom.DELETE("/:id", routes.DeleteClassroom)
 	}
 
 	subject := router.Group("/api/v1/subject")
 	{
 		subject.POST("/", routes.InsertSubject)
 		subject.GET("/", routes.GetAllSubjects)
+		subject.DELETE("/:id", routes.DeleteSubject)
 	}
 
 	course := router.Group("/api/v1/course")
 	{
 		course.GET("/", routes.GetAllCourses)
 		course.POST("/", routes.InsertCourse)
+		course.DELETE("/:id", routes.DeleteCourse)
 	}
 
 	schedule := router.Group("/api/v1/schedule")
@@ -95,11 +103,13 @@ func main() {
 		schedule.POST("/", routes.InsertSchedule)
 		schedule.GET("/", routes.GetAllSchedules)
 		schedule.GET("/:id", routes.GetStudentsBySchedule)
+		schedule.DELETE("/:id", routes.DeleteSchedule)
 	}
 
 	attendance := router.Group("/api/v1/attendance")
 	{
 		attendance.POST("/", routes.InsertAttendance)
+		attendance.DELETE("/:id", routes.DeleteAttendance)
 	}
 
 	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))

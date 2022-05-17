@@ -1,6 +1,9 @@
 package model
 
+import "gorm.io/gorm"
+
 type Class struct {
+	gorm.Model   `swaggerignore:"true"`
 	Id           int     `gorm:"primaryKey;autoIncrement:true" json:"id"`
 	ClassAcronym string  `gorm:"type:varchar(3);not null" json:"classAcronym"`
 	IdSubject    int     `gorm:"not null" json:"idSubject"`

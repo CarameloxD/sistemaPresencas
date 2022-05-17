@@ -49,11 +49,8 @@ func GetAllStudents(c *gin.Context) {
 	var students []model.Student
 
 	services.OpenDatabase()
-	rows, _ := services.Db.Raw("Select * from students").Rows()
+	services.Db.Select("id,name,email,student_number").Find(&students)
 
-	for rows.Next() {
-		services.Db.ScanRows(rows, &students)
-	}
 	c.JSON(http.StatusOK, gin.H{"status": http.StatusOK, "students": students})
 }
 
@@ -86,4 +83,18 @@ func GetSchedulesByStudent(c *gin.Context) {
 		services.Db.ScanRows(rows, &requests)
 	}
 	c.JSON(http.StatusOK, gin.H{"status": http.StatusOK, "schedules": requests})
+}
+
+func GetStudentsByCourse(c *gin.Context) {
+	var students []model.Student
+	var course model.Course
+	services.Db.Find(&course, c.Param("id"))
+
+	services.OpenDatabase()
+	rows, _ := services.Db.Raw("Select distinct students.* from students, subscriptions, courses where students.id = subscriptions.id_student and subscriptions.id_course = ? and subscriptions.deleted_at is null", course.Id).Rows()
+
+	for rows.Next() {
+		services.Db.ScanRows(rows, &students)
+	}
+	c.JSON(http.StatusOK, gin.H{"status": http.StatusOK, "students": students})
 }

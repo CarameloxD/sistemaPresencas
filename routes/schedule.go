@@ -16,3 +16,7 @@ func GetAllSchedules(c *gin.Context) {
 func GetStudentsBySchedule(c *gin.Context) {
 	controllers.GetStudentsBySchedule(c)
 }
+
+func DeleteSchedule(c *gin.Context) {
+	//controllers.DeleteSchedule(c)
+}

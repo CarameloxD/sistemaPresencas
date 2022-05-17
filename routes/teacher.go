@@ -16,3 +16,7 @@ func GetTeacherInfo(c *gin.Context) {
 func GetAllTeachers(c *gin.Context) {
 	controllers.GetAllTeachers(c)
 }
+
+func DeleteTeacher(c *gin.Context) {
+	controllers.DeleteTeacher(c)
+}

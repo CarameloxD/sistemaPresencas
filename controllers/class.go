@@ -21,10 +21,23 @@ func GetAllClasses(c *gin.Context) {
 	var classes []model.Class
 
 	services.OpenDatabase()
-	rows, _ := services.Db.Raw("Select * from classes").Rows()
-
-	for rows.Next() {
-		services.Db.ScanRows(rows, &classes)
+	services.Db.Select("id,class_acronym,id_subject,id_teacher").Find(&classes)
+	if len(classes) <= 0 {
+		c.JSON(http.StatusNotFound, gin.H{"status": http.StatusNotFound, "message": "classes not found!"})
+		return
 	}
 	c.JSON(http.StatusOK, gin.H{"status": http.StatusOK, "classes": classes})
+}
+
+func DeleteClass(c *gin.Context) {
+	var class model.Class
+	services.OpenDatabase()
+	services.Db.Find(&class, c.Param("id"))
+
+	if class.Id == 0 {
+		c.JSON(http.StatusNotFound, gin.H{"status": http.StatusNotFound, "message": "Class not found!"})
+		return
+	}
+	services.Db.Delete(&class)
+	c.JSON(http.StatusOK, gin.H{"status": http.StatusOK, "message": "Class deleted!"})
 }

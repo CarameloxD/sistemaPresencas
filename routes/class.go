@@ -12,3 +12,7 @@ func InsertClass(c *gin.Context) {
 func GetAllClasses(c *gin.Context) {
 	controllers.GetAllClasses(c)
 }
+
+func DeleteClass(c *gin.Context) {
+	controllers.DeleteClass(c)
+}

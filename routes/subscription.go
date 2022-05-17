@@ -8,3 +8,11 @@ import (
 func InsertSubscription(c *gin.Context) {
 	controllers.InsertSubscription(c)
 }
+
+func DeleteSubscription(c *gin.Context) {
+	controllers.DeleteSubscription(c)
+}
+
+func GetAllSubscriptions(c *gin.Context) {
+	controllers.GetAllSubscriptions(c)
+}

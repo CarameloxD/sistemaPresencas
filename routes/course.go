@@ -12,3 +12,7 @@ func GetAllCourses(c *gin.Context) {
 func InsertCourse(c *gin.Context) {
 	controllers.InsertCourse(c)
 }
+
+func DeleteCourse(c *gin.Context) {
+	controllers.DeleteCourse(c)
+}

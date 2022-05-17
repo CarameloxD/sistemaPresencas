@@ -11,11 +11,8 @@ func GetAllCourses(c *gin.Context) {
 	var courses []model.Course
 
 	services.OpenDatabase()
-	rows, _ := services.Db.Raw("Select * from courses").Rows()
+	services.Db.Select("id,title").Find(&courses)
 
-	for rows.Next() {
-		services.Db.ScanRows(rows, &courses)
-	}
 	c.JSON(http.StatusOK, gin.H{"status": http.StatusOK, "courses": courses})
 }
 
@@ -27,4 +24,17 @@ func InsertCourse(c *gin.Context) {
 	}
 	services.Db.Save(&course)
 	c.JSON(http.StatusCreated, gin.H{"status": http.StatusCreated, "message": "Created Successfully"})
+}
+
+func DeleteCourse(c *gin.Context) {
+	var course model.Course
+	services.OpenDatabase()
+	services.Db.Find(&course, c.Param("id"))
+
+	if course.Title == "" {
+		c.JSON(http.StatusNotFound, gin.H{"status": http.StatusNotFound, "message": "User not found!"})
+		return
+	}
+	services.Db.Delete(&course)
+	c.JSON(http.StatusOK, gin.H{"status": http.StatusOK, "message": "Deleted!"})
 }
