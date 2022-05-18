@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"sistemaPresencas/model"
@@ -70,7 +71,10 @@ func DeleteStudent(c *gin.Context) {
 func GetSchedulesByStudent(c *gin.Context) {
 	var user model.Student
 	services.OpenDatabase()
-	services.Db.Find(&user, c.Param("student_number"))
+	fmt.Println("Puta")
+	services.Db.Where("student_number = ?", c.Param("id")).First(&user)
+	fmt.Println(c.Param("id"))
+	fmt.Println(user.Name)
 
 	if user.Id == 0 {
 		c.JSON(http.StatusNotFound, gin.H{"status": http.StatusNotFound, "message": "Schedule not found!"})
@@ -81,6 +85,7 @@ func GetSchedulesByStudent(c *gin.Context) {
 	rows, _ := services.Db.Raw("Select schedules.*, subjects.name, subjects.type,classrooms.identifier, teachers.name as Teacher from students, subscriptions, courses, subjects, classes, schedules, classrooms, teachers where students.id = ? and students.id = subscriptions.id_student and subscriptions.id_course = courses.id and subjects.id_course = courses.id and classes.id_subject = subjects.id and schedules.id_class = classes.id and schedules.id_classroom = classrooms.id and classes.id_teacher = teachers.id and date(schedules.starting_time) = current_date order by schedules.starting_time", user.Id).Rows()
 	for rows.Next() {
 		services.Db.ScanRows(rows, &requests)
+		fmt.Println(requests)
 	}
 	c.JSON(http.StatusOK, gin.H{"status": http.StatusOK, "schedules": requests})
 }

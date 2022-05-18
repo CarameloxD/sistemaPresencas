@@ -103,7 +103,8 @@ func main() {
 		schedule.POST("/", routes.InsertSchedule)
 		schedule.GET("/", routes.GetAllSchedules)
 		schedule.GET("/:id", routes.GetStudentsBySchedule)
-		schedule.DELETE("/:id", routes.DeleteSchedule)
+		schedule.DELETE("/delete", routes.DeleteSchedule)
+		schedule.GET("getSchedulesByClass/:id", routes.GetSchedulesByClass)
 	}
 
 	attendance := router.Group("/api/v1/attendance")
