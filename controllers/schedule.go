@@ -86,6 +86,24 @@ func GetStudentsBySchedule(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"status": http.StatusOK, "data": schedule, "students": students})
 }
 
+func GetAttendingStudentsBySchedule(c *gin.Context) {
+	var schedule model.Schedule
+	services.OpenDatabase()
+	services.Db.Find(&schedule, c.Param("id"))
+
+	if schedule.Id == 0 {
+		c.JSON(http.StatusNotFound, gin.H{"status": http.StatusNotFound, "message": "Schedule not found!"})
+		return
+	}
+
+	var students []model.Student
+	rows, _ := services.Db.Raw("select distinct students.* from students, attendances, schedules where attendances.id_schedule = ? and students.id = attendances.id_student;", schedule.Id).Rows()
+	for rows.Next() {
+		services.Db.ScanRows(rows, &students)
+	}
+	c.JSON(http.StatusOK, gin.H{"status": http.StatusOK, "data": schedule, "students": students})
+}
+
 func GetSchedulesByClass(c *gin.Context) {
 	var schedules []RequestSC
 	var class model.Class
