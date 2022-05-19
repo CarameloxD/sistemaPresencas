@@ -10,5 +10,5 @@ func InsertAttendance(c *gin.Context) {
 }
 
 func DeleteAttendance(c *gin.Context) {
-	//controllers.DeleteAttendance(c)
+	controllers.DeleteAttendance(c)
 }
