@@ -12,6 +12,11 @@ type RequestA struct {
 	IdStudents []int
 }
 
+type RequestB struct {
+	IdSchedule int
+	IdStudent  string
+}
+
 func InsertAttendance(c *gin.Context) {
 	var request RequestA
 	services.OpenDatabase()
@@ -26,6 +31,25 @@ func InsertAttendance(c *gin.Context) {
 		attendance.IdStudent = idStudent
 		services.Db.Save(&attendance)
 	}
+	c.JSON(http.StatusCreated, gin.H{"status": http.StatusCreated, "message": "Created Successfully"})
+}
+
+func InsertAttendanceByStudent(c *gin.Context) {
+	var request RequestB
+	services.OpenDatabase()
+	if err := c.ShouldBindJSON(&request); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"status": http.StatusBadRequest, "message": "Error! Check All Fields"})
+		return
+	}
+
+	var user model.Student
+	services.Db.Where("student_number = ?", c.Param(request.IdStudent)).First(&user)
+
+	var attendance model.Attendance
+	attendance.IdSchedule = request.IdSchedule
+	attendance.IdStudent = user.Id
+	services.Db.Save(&attendance)
+
 	c.JSON(http.StatusCreated, gin.H{"status": http.StatusCreated, "message": "Created Successfully"})
 }
 

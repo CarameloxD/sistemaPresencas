@@ -113,6 +113,7 @@ func main() {
 	attendance := router.Group("/api/v1/attendance")
 	{
 		attendance.POST("/", routes.InsertAttendance)
+		attendance.POST("/insertAttendanceByStudent", routes.InsertAttendanceByStudent)
 		attendance.DELETE("/delete", routes.DeleteAttendance)
 	}
 
