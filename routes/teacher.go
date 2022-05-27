@@ -5,6 +5,10 @@ import (
 	"sistemaPresencas/controllers"
 )
 
+func LoginTeacher(c *gin.Context) {
+	controllers.LoginTeacher(c)
+}
+
 func InsertTeacher(c *gin.Context) {
 	controllers.InsertTeacher(c)
 }
@@ -19,4 +23,8 @@ func GetAllTeachers(c *gin.Context) {
 
 func DeleteTeacher(c *gin.Context) {
 	controllers.DeleteTeacher(c)
+}
+
+func GetSchedulesByTeacher(c *gin.Context) {
+	controllers.GetSchedulesByTeacher(c)
 }

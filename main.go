@@ -61,6 +61,8 @@ func main() {
 		teacher.GET("/", routes.GetAllTeachers)
 		teacher.POST("/", routes.InsertTeacher)
 		teacher.DELETE("/:id", routes.DeleteTeacher)
+		teacher.POST("/login", routes.LoginTeacher)
+		teacher.GET("getSchedulesByTeacher/:id", routes.GetSchedulesByTeacher)
 	}
 
 	subscription := router.Group("/api/v1/subscription")
@@ -112,6 +114,11 @@ func main() {
 	{
 		attendance.POST("/", routes.InsertAttendance)
 		attendance.DELETE("/delete", routes.DeleteAttendance)
+	}
+
+	qrCode := router.Group("/api/v1/qrCode")
+	{
+		qrCode.GET("/:id", routes.GetQrCode)
 	}
 
 	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))

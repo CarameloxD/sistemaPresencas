@@ -7,6 +7,7 @@ type Teacher struct {
 	Id         int    `gorm:"primaryKey;autoIncrement:true" json:"Id"`
 	Name       string `gorm:"size:255;not null" json:"name"`
 	Username   string `gorm:"size:255;not null" json:"username"`
+	Password   string `json:"password"`
 	Email      string `gorm:"size:255;not null" json:"email"`
 	Picture    string `gorm:"size:255;not null" json:"picture"`
 }

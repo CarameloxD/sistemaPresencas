@@ -110,7 +110,7 @@ func GetSchedulesByClass(c *gin.Context) {
 	services.Db.Find(&class, c.Param("id"))
 
 	services.OpenDatabase()
-	rows, _ := services.Db.Raw("Select distinct schedules.*, subjects.name from schedules, classes, subjects where schedules.id_class = ? and subjects.id = classes.id_subject and  schedules.id_class = classes.id and schedules.deleted_at is null", class.Id).Rows()
+	rows, _ := services.Db.Raw("Select distinct schedules.*, subjects.name from schedules, classes, subjects where schedules.id_class = ? and subjects.id = classes.id_subject and  schedules.id_class = classes.id and schedules.deleted_at is null and date(schedules.starting_time) = current_date order by schedules.starting_time", class.Id).Rows()
 
 	for rows.Next() {
 		services.Db.ScanRows(rows, &schedules)
