@@ -1,11 +1,12 @@
 package controllers
 
 import (
-	"github.com/gin-gonic/gin"
 	"net/http"
 	"sistemaPresencas/model"
 	"sistemaPresencas/services"
 	"time"
+
+	"github.com/gin-gonic/gin"
 )
 
 type RequestS struct {
@@ -89,6 +90,8 @@ func GetStudentsByCourse(c *gin.Context) {
 	var students []model.Student
 	var course model.Course
 	services.Db.Find(&course, c.Param("id"))
+
+	print(course.Id)
 
 	services.OpenDatabase()
 	rows, _ := services.Db.Raw("Select distinct students.* from students, subscriptions, courses where students.id = subscriptions.id_student and subscriptions.id_course = ? and subscriptions.deleted_at is null", course.Id).Rows()

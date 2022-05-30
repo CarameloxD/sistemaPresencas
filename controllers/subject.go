@@ -21,11 +21,8 @@ func GetAllSubjects(c *gin.Context) {
 	var subjects []model.Subject
 
 	services.OpenDatabase()
-	rows, _ := services.Db.Raw("Select * from subjects").Rows()
+	services.Db.Select("*").Find(&subjects)
 
-	for rows.Next() {
-		services.Db.ScanRows(rows, &subjects)
-	}
 	c.JSON(http.StatusOK, gin.H{"status": http.StatusOK, "subjects": subjects})
 }
 

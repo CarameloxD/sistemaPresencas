@@ -10,7 +10,7 @@ import (
 func GetQrCode(c *gin.Context) {
 	var classroom model.Classroom
 	services.OpenDatabase()
-	services.Db.Where("id_classroom = ?", c.Param("id")).First(&classroom)
+	services.Db.Where("identifier = ?", c.Param("id")).First(&classroom)
 
 	if classroom.Id == 0 {
 		c.JSON(http.StatusNotFound, gin.H{"status": http.StatusNotFound, "message": "Classroom not found!"})

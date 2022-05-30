@@ -11,7 +11,7 @@ import (
 
 func LoginTeacher(c *gin.Context) {
 	var usr model.Teacher
-	fmt.Println(c.Param("username"))
+	fmt.Println(c.Params)
 	if err := c.ShouldBindJSON(&usr); err != nil { // guardo no creds o que veio por parametro no pedido
 		c.JSON(http.StatusBadRequest, gin.H{"status": http.StatusBadRequest, "message": "Bad request!"})
 		return
